@@ -1,0 +1,9 @@
+backup/
+.ipynb_checkpoints/
+
+data/*
+#!data/nparrays/
+!data/ptbxl_database.csv
+!data/scp_statements.csv
+
+physionet.org
