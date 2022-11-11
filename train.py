@@ -13,6 +13,8 @@ def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every
         lr = run.config.lr
         epochs = run.config.epochs
         log_every = run.config.log_every
+        
+        wandb.watch(model, log_freq=100)
 
     optimizer = torch.optim.Adam(model.parameters(), lr)
     loss_meter = AverageMeter()
@@ -52,7 +54,8 @@ def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every
                                     "STTC auprc": lossdict["auprc"][0],
                                     "CD auprc": lossdict["auprc"][0],
                                     "HYP auprc": lossdict["auprc"][0],
-                                    "val loss": lossdict["epoch_loss"]})
+                                    "val loss": lossdict["epoch_loss"],
+                                    "epoch": epoch})
             
             print("Eval at epoch ", epoch)
             lossdict = evaluate(test_dataloader, model)
