@@ -1,6 +1,8 @@
 import torch
 import numpy as np
 
+from sklearn.metrics import roc_auc_score, average_precision_score
+
 CEloss = torch.nn.CrossEntropyLoss()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
