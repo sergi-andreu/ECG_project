@@ -1,3 +1,8 @@
+import torch
+from trainutils import *
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 def train(model, lr=5e-4):
 
     optimizer = torch.optim.Adam(model.parameters(), lr)
@@ -16,7 +21,6 @@ def train(model, lr=5e-4):
                 y = y.to(device)
 
                 model.forward(x)
-
                 loss = get_loss(model, x, y)
 
                 optimizer.zero_grad()
