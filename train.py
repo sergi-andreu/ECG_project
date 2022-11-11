@@ -1,9 +1,9 @@
 import torch
-from trainutils import *
+from .trainutils import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def train(model, lr=5e-4):
+def train(model, train_dataloader, test_dataloader, lr=5e-4):
 
     optimizer = torch.optim.Adam(model.parameters(), lr)
 
