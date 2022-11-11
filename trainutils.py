@@ -1,6 +1,7 @@
 import torch
 
 CEloss = torch.nn.CrossEntropyLoss()
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
