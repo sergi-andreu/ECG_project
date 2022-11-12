@@ -18,9 +18,9 @@ def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every
 
     if save_model:
         if wandb_flag:
-            save_loc = save_loc + run.config.lr + "_" + run.config.epochs
+            save_loc = f"{save_loc}_{run.config.lr}_{run.config.epochs}"
         else:
-            save_loc = save_loc + "_model"
+            save_loc = f"{save_loc}_model"
 
     optimizer = torch.optim.Adam(model.parameters(), lr)
     loss_meter = AverageMeter()
