@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-from sklearn.metrics import roc_auc_score, average_precision_score
+from sklearn.metrics import roc_auc_score, average_precision_score, jaccard_score, brier_score_loss
 
 CEloss = torch.nn.CrossEntropyLoss()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -39,8 +39,7 @@ def evaluate(dl, model):
     pbar = dl
     with torch.no_grad():
         for i, (xecg, y_) in enumerate(pbar):
-            #print(f"X size {xecg.size()}")
-            #print(f"Y size {y.size()}")
+
             y_trues.append(y_.detach().numpy())
 
             xecg = xecg.to(device)
@@ -49,7 +48,6 @@ def evaluate(dl, model):
             y_pred = model.forward(xecg)
             y_preds.append(y_pred.cpu().detach().numpy())
 
-            #print(f"y_pred size: {y_pred.size()} . y size: {y.size()}")
             l = loss_obj(y_pred, y_)
             loss += l.item()
     loss /= len(dl)
@@ -61,11 +59,15 @@ def evaluate(dl, model):
         ld['epoch_loss'] = loss
         ld['auc'] = roc_auc_score(y_trues, y_preds, average=None)
         ld['auprc'] = average_precision_score(y_trues, y_preds, average=None)
+        ld['jacc'] = jaccard_score(y_trues, y_preds, average=None)
+        ld['brier'] = brier_score_loss(y_trues, y_preds, average=None)
+        
     except ValueError:
         ld['epoch_loss'] = loss
         ld['auc'] = 0
         ld['auprc'] = 0
-    print(ld)
+        ld['jacc'] = 0
+        ld['brier'] = 0
     return ld
 
 def update_lossdict(lossdict, update, action='append'):
