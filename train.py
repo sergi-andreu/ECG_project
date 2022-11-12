@@ -4,7 +4,8 @@ from .models import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every=10, wandb_flag=True, verbose=True):
+def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every=10, wandb_flag=True, verbose=True,
+            save_model=False, save_loc=""):
     
     if wandb_flag:
         import wandb
@@ -14,6 +15,12 @@ def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every
         log_every = run.config.log_every
         
         wandb.watch(model, log_freq=100)
+
+    if save_model:
+        if wandb_flag:
+            save_loc = save_loc + run.config.lr + "_" + run.config.epochs
+        else:
+            save_loc = save_loc + "_model"
 
     optimizer = torch.optim.Adam(model.parameters(), lr)
     loss_meter = AverageMeter()
@@ -76,5 +83,8 @@ def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every
                 lossdict = evaluate(test_dataloader, model)
                 val_ld = update_lossdict(val_ld, lossdict)
             loss_meter.reset()
+
+    if save_model:
+        torch.save(model, save_loc)
 
     return train_ld, lossdict, val_ld
