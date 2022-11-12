@@ -18,7 +18,7 @@ def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every
 
     if save_model:
         if wandb_flag:
-            save_loc = f"{save_loc}_{run.config.lr}_{run.config.epochs}"
+            save_loc = f"{save_loc}_lr_{run.config.lr}_epochs_{run.config.epochs}"
         else:
             save_loc = f"{save_loc}_model"
 
