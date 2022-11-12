@@ -55,24 +55,12 @@ def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every
                                     "STTC auc": lossdict["auc"][2],
                                     "CD auc": lossdict["auc"][3],
                                     "HYP auc": lossdict["auc"][4],
-                                    "NORM auprc": lossdict["auprc"][0],
 
+                                    "NORM auprc": lossdict["auprc"][0],
                                     "MI auprc": lossdict["auprc"][1],
                                     "STTC auprc": lossdict["auprc"][2],
                                     "CD auprc": lossdict["auprc"][3],
                                     "HYP auprc": lossdict["auprc"][4],
-
-                                    "NORM auprc": lossdict["jacc"][0],
-                                    "MI auprc": lossdict["jacc"][1],
-                                    "STTC auprc": lossdict["jacc"][2],
-                                    "CD auprc": lossdict["jacc"][3],
-                                    "HYP auprc": lossdict["jacc"][4],
-
-                                    "NORM auprc": lossdict["brier"][0],
-                                    "MI auprc": lossdict["brier"][1],
-                                    "STTC auprc": lossdict["brier"][2],
-                                    "CD auprc": lossdict["brier"][3],
-                                    "HYP auprc": lossdict["brier"][4],
 
                                     "val loss": lossdict["epoch_loss"],
 
@@ -82,6 +70,9 @@ def train(model, train_dataloader, test_dataloader, lr=5e-4, epochs=5, log_every
             if not wandb_flag:
                 lossdict = evaluate(test_dataloader, model)
                 val_ld = update_lossdict(val_ld, lossdict)
+
+                if verbose:
+                    print(lossdict)
             loss_meter.reset()
 
     if save_model:

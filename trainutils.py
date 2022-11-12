@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-from sklearn.metrics import roc_auc_score, average_precision_score, jaccard_score, brier_score_loss
+from sklearn.metrics import roc_auc_score, average_precision_score
 
 CEloss = torch.nn.CrossEntropyLoss()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -59,15 +59,11 @@ def evaluate(dl, model):
         ld['epoch_loss'] = loss
         ld['auc'] = roc_auc_score(y_trues, y_preds, average=None)
         ld['auprc'] = average_precision_score(y_trues, y_preds, average=None)
-        ld['jacc'] = jaccard_score(y_trues, y_preds, average=None)
-        ld['brier'] = brier_score_loss(y_trues, y_preds, average=None)
-        
+
     except ValueError:
         ld['epoch_loss'] = loss
         ld['auc'] = 0
         ld['auprc'] = 0
-        ld['jacc'] = 0
-        ld['brier'] = 0
     return ld
 
 def update_lossdict(lossdict, update, action='append'):
