@@ -1,11 +1,22 @@
+"""
+Code for defining a training utils
+Author = @Sergi-Andreu
+
+This is done to simplify the train.py script
+"""
+
+# Import required packages
 import torch
 import numpy as np
 
 from sklearn.metrics import roc_auc_score, average_precision_score
 
+# Define the crossentropy loss function and device 
 CEloss = torch.nn.CrossEntropyLoss()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
+# Define averagemeter class
 class AverageMeter(object):
     """Computes and stores the average and current value"""
     def __init__(self):
@@ -23,14 +34,20 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
+# Define a get_loss function
 def get_loss(model, x_batch, y_batch):
     yhat = model.forward(x_batch)
     y_batch = y_batch.float()
     loss = CEloss(yhat, y_batch)
     return loss
 
+# Define the evaluation function
+# it computes the loss, and also AUC and AUPRC values for each label
 def evaluate(dl, model):
+    # Set model to eval mode
     model.eval()
+    
+    # Initialize loggers
     ld = {}
     loss = 0
     loss_obj = CEloss
@@ -54,7 +71,9 @@ def evaluate(dl, model):
     (y_preds, y_trues) = (np.concatenate(y_preds,axis=0), np.concatenate(y_trues,axis=0))
     y_preds = np.squeeze(y_preds)
     y_trues = np.squeeze(y_trues)
-
+    
+    # Not very good practice here, but try to compute the metrics or else set to 0
+    # this is not recommended 
     try:
         ld['epoch_loss'] = loss
         ld['auc'] = roc_auc_score(y_trues, y_preds, average=None)
@@ -66,6 +85,7 @@ def evaluate(dl, model):
         ld['auprc'] = 0
     return ld
 
+# Define an update function for the loss dictionary
 def update_lossdict(lossdict, update, action='append'):
     for k in update.keys():
         if action == 'append':
