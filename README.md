@@ -60,6 +60,9 @@ and for "smoothed" saliency maps I follow
 Better models exists, and better pipelines for explainability for ECG data and for time series. In this repository I made a prototype / first steps, considering the time-frame and expectations.
 
 # Lessons learned
+It is not trivial to make predictions on ECG data. And due to the sensitive nature of ML use for healthcare, more robust pipelines, specially for explainability, need to be developed.
+
+In this repository I show prototype / first steps code for approaching this problem, focusing on the superclass level.
 
 # Further work
 
@@ -71,3 +74,23 @@ All models perform similarly in terms on validation loss, selecting the model wi
 The [AUC Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html) and [AUPRC Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score) are presented here per-label (NORM, MI, STTC, CD and HYP). AUC and AUPRC scores close to 1 make for a perfect classifier, whereas close to 0.5 make for a random classifier. All AUC and AUPRC scores here are greater than 0.8, meaning that the model performs relatively well for this data.
 
 
+## Training and validation loss
+Plots for all models (with different learning rates)
+
+### Training loss evolution
+![train_loss](figs/train_loss.JPG)
+
+### Validation loss evolution
+![val_loss](figs/val_loss.JPG)
+
+## Best model
+Plots for best model (lr 0.0005)
+
+## Loss 
+![train_val_loss](figs/train_val_loss.JPG)
+
+## AUC
+![AUC](figs/auc.JPG)
+
+## AUPRC
+![AUPRC](figs/auprc.JPG)
