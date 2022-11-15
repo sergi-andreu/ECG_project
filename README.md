@@ -111,3 +111,8 @@ Plots for best model (lr 0.0005)
 
 ## AUPRC
 ![AUPRC](figs/auprc.JPG)
+
+## Gradients visualization
+Here some plots regarding the evolution of the gradients is presented. These plots are logged due to the *wandb.watch(model)* function.
+Visualizing the gradient's evolution can be very useful for hyperparameter tuning, for understanding the training procedure and for spotting possible errors.
+![gradients](figs/gradients.JPG)
