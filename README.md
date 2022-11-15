@@ -53,6 +53,7 @@ For the model selection, I have followed this literature:
 
 For saliency maps (trying to understand the model decisions), I follow
 - [Deep Inside Convolutional Networks: Visualising Image Classification Models and Saliency Maps](https://arxiv.org/abs/1312.6034)
+
 and for "smoothed" saliency maps I follow
 - [SmoothGrad: removing noise by adding noise](https://arxiv.org/pdf/1706.03825.pdf)
 
