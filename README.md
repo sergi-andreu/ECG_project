@@ -6,7 +6,7 @@ I have selected a ResNet18 model following other similar approaches for this tas
 
 The focus on this repository would be on predicting the superclass labels (NORM, MI, STTC, CD and HYP), using the samplerate-100 data (as opposed to the samplerate-500 data). It is also possible to predict other labels (such as subclasses), but a 5-output prediction can be complicated enough, and this is just a week-project with some prototype code on the first steps I would follow if having to deal with this task.
 
-The value of this repository is to be able to explore the dataset, with figures that can be visualized by experts to gain some domain knowledge. The trained models in this repository can also be used to predict abnormalities on the ECG data (with an AUC of 0.8-0.9). This could ease the cardiac diagnosis of cardiac abnormalities, and so increase the chances of successful treatments, without the need of experts annotating the data manually.
+The value of this repository is to be able to explore the dataset, with useful and easy-to-understand figures. The trained models in this repository can also be used to predict abnormalities on the ECG data (with an AUC of 0.8-0.9). This could ease the cardiac diagnosis of cardiac abnormalities, and so increase the chances of successful treatments, without the need of experts annotating the data manually.
 
 An example use of this code could be to predict a score on cardiac abnormalities (labels MI, STTC, CD and HYP), and set a low thresholds (have quite some false positives), and then pass this ECG data to experts, which could make a final decision.
 The models presented here should not be used for diagnostic purposes without expert supervision. The models have not been fine-tuned, nor they are understood once trained. 
@@ -30,6 +30,22 @@ The structure of the code can be seen in four main blocks:
 - Block 2: Training on the _ECG_ signals, predicting the superclass labels (NORM, MI, STTC, CD and HYP) using a ResNet model.
 - Block 3: Evaluation of the models trained in Block 2.
 
+The notebooks start with a number, indicating the block to which they pertain.
+
+The structure of the files is as follows:
+- ***data/*** : Directory containing the *ptb-xl* data. It does not contain the data here, only locally (only *.csv* files).
+- ***figs/*** : Figures used in the *README.md* file.
+- ***0_Create_arrays.ipynb*** : Notebook that creates numpy arrays from the raw data, for later storing them in google drive for easier access. The arrays created are the _ECG_ data arrays, the label arrays, and *BPM* arrays, which are approximations of the mean heart beat, as computed with the [XQRS algorithm](https://wfdb.readthedocs.io/en/latest/processing.html).
+- ***0_Read_ECG.ipynb***: Notebook containing some utilities for the _ECG_ data, like plotting the data, approximating the heart beat, computing the QRS, ...
+- ***1_Features_Exploration.ipynb***: Notebook exploring the dataset using the features (also importing the heart beat features computed in the  *0_Create_arrays.ipynb* notebook. It also contains [SVC classifiers](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) on these features.
+- ***1_Labels_Exploration.ipynb***: Notebook containing some ["data wrangling"](https://en.wikipedia.org/wiki/Data_wrangling) from the *.csv* files data, that could be useful, but it has not been used here in an actionable way.
+- ***2_Training.ipynb***: Notebook containing the training procedure of a *ResNet* model, as defined in the *models.py* script, and does a simple hyperparameter search using a [Weights&Biases sweep](https://docs.wandb.ai/guides/sweeps).
+- ***3_Evluation.ipynb***: Notebook where one model is evaluated, out of the trained models in the *2_Training.ipynb* notebook. This notebook is perhaps the most interesting one. It contains the prediction distributions, AUC and AUPRC curves, and a report function, where a [Saliency Map](https://arxiv.org/abs/1312.6034) (approximating feature relevance) is presented. This of course needs lots of improvement.
+- ***3_Exploring_Evaluation.ipynb***: More useful plots used for evaluation, such as confusion matrices, and distribution of age, weight and height for the different classifications (true positives, true negatives, false positives, false negatives). This code should be extended in order to be more useful.
+- ***models.py***: Script where the torch models are defined, to be called in the *2_Training.ipynb* notebook.
+- ***train.py***: Script where the training function is defined, to be called in the *2_Training.ipynb* notebook.
+- ***trainutils.py***: Script where some utils for training are defined, to be called both in the *train.py* script and *2_Training.ipynb* notebook.
+
 # Environments
 Due to the dataset being "big", and my personal laptop being almost agonal and with limited memory, I have decided to use [google colab](https://colab.research.google.com/) for running most of the notebooks, google drive to store the data (as numpy arrays) and [Weights&Biases](https://wandb.ai/site) for experiment tracking. 
 
@@ -47,6 +63,8 @@ For the colab notebooks, the dependencies are installed and imported in each not
 
 # Lessons learned
 It is not trivial to make predictions on ECG data. And due to the sensitive nature of ML use for healthcare, more robust pipelines, specially for explainability, need to be developed.
+
+I have learned how to read and annotate ECG data, and some practices for train models. These repository is a "starting point", and extending it could provide for interesting, useful and actionable tools, if a proportional level of energy is put into this.
 
 # Further work
 In this repository I show prototype / first steps code for approaching this problem, focusing on the superclass level. This code can be extended to other labels, such as sub-class level.
