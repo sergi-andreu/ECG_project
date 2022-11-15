@@ -66,6 +66,10 @@ In this repository I show prototype / first steps code for approaching this prob
 
 # Further work
 
+# ResNet model
+Plot of the ResNet model used, using [torchviz](https://github.com/szagoruyko/pytorchviz) make_dot
+
+![resnet](figs/resnet_torchviz.png)
 
 # Wandb plots
 Here I present some plots present in the Weights&Biases project, used to select the "best" model.
