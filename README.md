@@ -37,11 +37,11 @@ However, the initial notebooks (*0_Create_arrays.ipynb* and *0_Read_ECG.ipynb*) 
 
 To run the local notebooks, the dependencies are as following:
 ## Dependencies for local environments
-- *wfdb* to read and process ECG data
-- *matplotlib* for plotting
-- *numpy*
-- *scipy* to do FFT transforms, etc
-The versions are not specified here. Better documentation on the dependencies is needed, and a *requirements.txt* file should be created.
+- *wfdb==4.0.0* to read and process ECG data
+- *matplotlib==3.4.3* for plotting
+- *numpy==1.23.4* as always
+- *scipy==1.9.2* to do FFT transforms, etc
+Better documentation on the dependencies is needed, and a *requirements.txt* file should be created. Some required packages may be missing.
 
 For the colab notebooks, the dependencies are installed and imported in each notebook. It is recommended to use a GPU (cuda) environment.
 
@@ -60,5 +60,14 @@ and for "smoothed" saliency maps I follow
 Better models exists, and better pipelines for explainability for ECG data and for time series. In this repository I made a prototype / first steps, considering the time-frame and expectations.
 
 # Lessons learned
+
+# Further work
+
+
+# Wandb plots
+Here I present some plots present in the Weights&Biases project, used to select the "best" model.
+All models perform similarly in terms on validation loss, selecting the model with a learning rate of *0.00005*.
+
+The [AUC Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html) and [AUPRC Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score) are presented here per-label (NORM, MI, STTC, CD and HYP). AUC and AUPRC scores close to 1 make for a perfect classifier, whereas close to 0.5 make for a random classifier. All AUC and AUPRC scores here are greater than 0.8, meaning that the model performs relatively well for this data.
 
 
