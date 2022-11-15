@@ -45,6 +45,26 @@ Better documentation on the dependencies is needed, and a *requirements.txt* fil
 
 For the colab notebooks, the dependencies are installed and imported in each notebook. It is recommended to use a GPU (cuda) environment.
 
+# Lessons learned
+It is not trivial to make predictions on ECG data. And due to the sensitive nature of ML use for healthcare, more robust pipelines, specially for explainability, need to be developed.
+
+# Further work
+In this repository I show prototype / first steps code for approaching this problem, focusing on the superclass level. This code can be extended to other labels, such as sub-class level.
+
+Moreover, some features of the data (such as age, weight, ...) could be used as input features for the prediction. An example pipeline doing this could be one in which to separate networks perform some feature representation on the early layers (one, for example the ResNet architecture, for the ECG data, and other, for example a simple Dense network, for the other features) and then added together.
+
+It would also be interesting to plot a lower-dimensional representation of the data present on the *1_Features_Exploration.ipynb* notebook. This could be done easily using, for example, [PCA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html), [UMAP](https://umap.scikit-tda.org/transform.html) or [t-SNE](https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html). I have not done this, since these representations may break the understanding on the features, and since the SVC classifiers give similar information on the separability of the data with respect to the labels.
+
+Better features could be computed in the *1_Features_Exploration.ipynb* notebook. This, however, would require some domain knowledge that I do not possess, and it is expected that a complex neural network (such as the one used in this repository) would outperform a simple classifier on simple features. However, it is good to have simple features classifiers, both as a baseline, and also to understand the problem better, and to see if there are some interesting, and explainable, patterns in the data.
+Better simple classifiers can also be defined, such as using SVC with kernels, or using K-means classifiers, decision trees, random forests, ... To keep the repository simple, only SVC are used.
+
+Most of the work, for production, should be done on fine-tuning the neural network models. These are observed to achieve far better AUC scores than simple classifiers, and they are also more scalable to use with this huge dataset. No fine-tuning is present here, although this implementation already achieves resasonable AUC scores for all the labels. However, a better hyperparmeter tuning could be easily performed, and I have not done so for time limitations.
+
+But, without a doubt, the most important work should be done in understanding the model's decisions. In the *3_Evaluation.ipynb* notebook I start this path. In the end of the notebook, the *get_report()* function gives easy-to-understand information of the model's decision /diagnosis for each patient. The saliency maps should indicate how much a feature (here, a segment of the input data) contributes to the model decision. Values with greater saliency values should be more relevant. However, this is often not true, and there are lots of problems with saliency maps.
+Better explainability pipelines should be developed. First, that are better-aimed for time-series data, and second, that they are more useful for ECG diagnosis. 
+
+Other explainability methods other than Saliency Maps are [Shapley Values](https://en.wikipedia.org/wiki/Shapley_value), that can be implemented via [SHAP](https://christophm.github.io/interpretable-ml-book/shap.html) and [DeepLIFT](https://github.com/kundajelab/deeplift), for example.
+
 # References
 No exhaustive literature study has been made.
 For the model selection, I have followed this literature:
@@ -58,13 +78,6 @@ and for "smoothed" saliency maps I follow
 - [SmoothGrad: removing noise by adding noise](https://arxiv.org/pdf/1706.03825.pdf)
 
 Better models exists, and better pipelines for explainability for ECG data and for time series. In this repository I made a prototype / first steps, considering the time-frame and expectations.
-
-# Lessons learned
-It is not trivial to make predictions on ECG data. And due to the sensitive nature of ML use for healthcare, more robust pipelines, specially for explainability, need to be developed.
-
-In this repository I show prototype / first steps code for approaching this problem, focusing on the superclass level.
-
-# Further work
 
 # ResNet model
 Plot of the ResNet model used, using [torchviz](https://github.com/szagoruyko/pytorchviz) make_dot
